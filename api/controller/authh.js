@@ -36,7 +36,7 @@ export const register = async (req, res) => {
       await newUser.save();
   
       // Generate JWT token
-      const token = jwt.sign({ id: newUser._id }, process.env.jwt, { expiresIn: '1h' });
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
   
       // Set the access_token cookie and send response
       res.cookie("access_token", token, {
@@ -73,7 +73,7 @@ export const login = async (req, res) => {
   const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword) return res.status(401).send('Invalid password.');
 
-  const token = jwt.sign({ id: user._id, userType }, process.env.jwt, {
+  const token = jwt.sign({ id: user._id, userType }, process.env.JWT_SECRET, {
     expiresIn: '1h',
   });
 
@@ -109,7 +109,7 @@ export const checkAuth = async (req, res) => {
     return res.status(401).send({ auth: false, message: 'No token provided.' });
   }
 
-  jwt.verify(token, process.env.jwt, async (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
     if (err) {
       return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
     }

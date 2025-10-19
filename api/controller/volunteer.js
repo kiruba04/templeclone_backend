@@ -86,7 +86,7 @@ export const register = async (req, res) => {
       await newUser.save();
   
       // Generate JWT token
-      const token = jwt.sign({ id: newUser._id }, process.env.jwt, { expiresIn: '1h' });
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
   
       // Set the access_token cookie and send response
       res.cookie("access_token", token, {
