@@ -16,6 +16,11 @@ const inventorySchema = new mongoose.Schema({
     ref: 'Item', // Reference to the Item model
     required: true,
   },
+  name:{
+    type: String,
+    required: true,
+
+  },
   quantity: {
     type: Number,
     required: true,
@@ -36,6 +41,11 @@ const inventorySchema = new mongoose.Schema({
     required: function () {
       return this.isExpire; // expireDate is required only if isExpire is true
     },
+  },
+  isbarrowed: {
+    type: Boolean,
+    required: true,
+    default: false, // By default, items are assumed not to be borrowed
   },
 }, { timestamps: true }); // Adds createdAt and updatedAt fields
 

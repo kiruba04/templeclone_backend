@@ -1,6 +1,7 @@
 import Feedback from '../models/feedbackModel.js';
 import User from '../models/Trustee.js';
 import nodemailer from 'nodemailer';
+import moment from 'moment-timezone';
 
 
 export const submitFeedback = async (req, res) => {
@@ -13,7 +14,7 @@ export const submitFeedback = async (req, res) => {
     }
 
     // ✅ Current timestamp
-    const timestamp = new Date();
+   const timestamp = moment().tz("Asia/Kolkata").format("dddd, MMMM D, YYYY, hh:mm:ss A");
 
     // ✅ Format dates
     const formattedIssueDate = issueDate
@@ -25,15 +26,7 @@ export const submitFeedback = async (req, res) => {
         })
       : "Not Provided";
 
-    const formattedSubmittedAt = timestamp.toLocaleString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    });
+    
 
     // ✅ Save in DB
     const feedbackData = {
@@ -76,7 +69,7 @@ export const submitFeedback = async (req, res) => {
           <p><b>Message:</b> ${message}</p>
           <p><b>Issue Date:</b> ${formattedIssueDate}</p>
           <p><b>Issue Place:</b> ${issuePlace || "Not Provided"}</p>
-          <p><b>Submitted At:</b> ${formattedSubmittedAt}</p>
+          <p><b>Submitted At:</b> ${timestamp}</p>
         `
       });
     }

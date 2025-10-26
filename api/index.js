@@ -1,7 +1,7 @@
 import express  from "express"
 import mongoose  from "mongoose"
 import bodyParser from 'body-parser';
-import { sendOTP, verifyOTP } from './controller/otp.js';
+// import { sendOTP, verifyOTP } from './controller/otp.js';
 import dotenv  from "dotenv"
 import cookie from 'cookie-parser';
 import cors from 'cors';
@@ -25,6 +25,7 @@ import managementRoutes from './Router/managementRoutes.js';
 import TrusteeRoutes from './Router/trusteeRouter.js';
 import feedbackRoutes from './Router/feedbackRoutes.js';
 import responseRoutes from './Router/responseRoutes.js';
+
 
 const app = express()
 dotenv.config();
@@ -69,12 +70,12 @@ app.use('/api/response', responseRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/subcategories', subCategoryRoutes);
 app.use('/api/items', itemRoutes); 
-app.use('/api/management', managementRoutes); 
+app.use('/api/inventory', managementRoutes); 
 
 // Send images
 app.use('/api', sendRoutes);
-app.post('/api/auth/send-otp', sendOTP);
-app.post('/api/auth/verify-otp', verifyOTP);
+// app.post('/api/auth/send-otp', sendOTP);
+// app.post('/api/auth/verify-otp', verifyOTP);
 
 /*mongose port*/
 
