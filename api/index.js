@@ -67,7 +67,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(cookieParser());
+app.use(cookie());
 
 // Allow cookies + CORS headers safely
 app.use((req, res, next) => {
