@@ -31,19 +31,53 @@ const app = express()
 dotenv.config();
 
 /* middle ware*/
-app.use(express.json())
+// app.use(express.json())
+// app.use(cors({
+//     origin: process.env.React,
+//     credentials: true
+//   }));
+
+// app.use(cookie());
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', process.env.React); // Replace with your actual frontend URL
+//     res.setHeader('Access-Control-Allow-Credentials', 'true');
+//     next();
+//   });
+
+
+// Allowed origins list
+const allowedOrigins = [
+  process.env.React, // Production frontend URL from .env
+  "http://localhost:3000" // Local development frontend
+];
+
+app.use(express.json());
+
 app.use(cors({
-    origin: process.env.React,
-    credentials: true
-  }));
+  origin: function (origin, callback) {
+    // Allow requests with no origin (e.g., Postman / server-to-server)
+    if (!origin) return callback(null, true);
 
-app.use(cookie());
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
+app.use(cookieParser());
+
+// Allow cookies + CORS headers safely
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', process.env.React); // Replace with your actual frontend URL
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    next();
-  });
-
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 
 
 //router 
